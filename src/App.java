@@ -1,4 +1,5 @@
 import Controller.CamibusoController;
+import Controller.VentaController;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -47,5 +48,31 @@ public class App {
 
         System.out.println("------ Productos Disponibles ------");
         System.out.println(controladorProducto.buscar());
+
+         VentaController ventaProducto = new VentaController(controladorProducto);
+        boolean ventaRealizada = ventaProducto.realizarVenta("Juanita", 1, 100);
+
+        System.out.println(ventaRealizada ? "Venta realizada" : "Error al realizar la venta");
+
+        boolean segundaVentaRealizada = ventaProducto.realizarVenta("Felipe", 1, 3);
+
+        System.out.println(segundaVentaRealizada ? "Venta realizada" : "Error al realizar la venta");
+
+        boolean terceraVentaRealizada = ventaProducto.realizarVenta("Pepito", 1, 4);
+
+        System.out.println(terceraVentaRealizada ? "Venta realizada" : "Error al realizar la venta");
+
+        System.out.println("--------- Ventas realizada -----------");
+        System.out.println(ventaProducto.obtenerVentaRealizada());
+        
+        System.out.println("--------- Segunda venta realizada -----------");
+        System.out.println(ventaProducto.obtenerVenta(2));
+
+        System.out.println("------ Productos Disponibles ------");
+        System.out.println(controladorProducto.buscar());
+
+        System.out.println("Número de ventas realizadas: " + ventaProducto.cantidadVentaRealizada());
+
+        System.out.println("Valor total de ventas realizadas: " + ventaProducto.valorTotalVentaRealizada());
     }
 }
