@@ -1,16 +1,16 @@
 package View;
 import java.util.Scanner;
 
-import Controller.CamibusoController;
+import Controller.ProductoController;
 import Controller.VentaController;
 
 public class ProductoView {
 
     private Scanner scanner = new Scanner(System.in);
-    private CamibusoController camibusoController;
+    private ProductoController camibusoController;
 
     public ProductoView() {
-        this.camibusoController = new CamibusoController();
+        this.camibusoController = new ProductoController();
     }
 
     // Menu principal que indica al usuario las opciones de 1. inventario producto, 2. venta producto

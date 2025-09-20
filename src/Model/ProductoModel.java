@@ -1,8 +1,5 @@
 package Model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public abstract class ProductoModel {
     private int id;
     private String nombre;
@@ -12,7 +9,6 @@ public abstract class ProductoModel {
     private int categoria;
     private int stock;
     private float precio;
-    private Map<Integer, String> categoriaDisponible;
 
     public ProductoModel(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio) {
         this.id = id;
@@ -23,12 +19,6 @@ public abstract class ProductoModel {
         this.categoria = categoria;
         this.stock = stock;
         this.precio = precio;
-        this.categoriaDisponible = new HashMap<>();
-        categoriaDisponible.put(1, "Mujer");
-        categoriaDisponible.put(2, "Hombre");
-        categoriaDisponible.put(3, "Unisex");
-        categoriaDisponible.put(4, "Niño");
-        categoriaDisponible.put(5, "Niña");
     }
 
     public ProductoModel() {
@@ -94,20 +84,14 @@ public abstract class ProductoModel {
         this.precio = precio;
     }
 
-    public String getCategoriaDiponible(){
-        String listaCategoriaDisponible = "";
-
-        for(Map.Entry<Integer, String> entry : categoriaDisponible.entrySet()){
-            listaCategoriaDisponible +=  entry.getKey() + '.' + entry.getValue() + "\n";
-        }
-
-        return listaCategoriaDisponible;
-    }
-
     public String getProductoDisponible(){
         String productoDisponible = "1. Camibusos";
 
         return productoDisponible;
+    }
+
+    public CamibusoModel crearCamibusoModel(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, String tela){
+        return new CamibusoModel(id, nombre, marca, talla, color, categoria, stock, precio, tela);
     }
 
     

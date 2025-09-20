@@ -9,10 +9,10 @@ import Model.VentaModel;
 public class VentaController{
 
     private Map<Integer, VentaModel> historialVenta;
-    private CamibusoController camibusoController;
+    private ProductoController camibusoController;
     private int idVenta;
 
-    public VentaController(CamibusoController camibusoController){
+    public VentaController(ProductoController camibusoController){
         this.camibusoController = camibusoController;
         this.historialVenta = new HashMap<>();
         this.idVenta = 0;

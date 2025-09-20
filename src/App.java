@@ -1,9 +1,9 @@
-import Controller.CamibusoController;
+import Controller.ProductoController;
 import Controller.VentaController;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        CamibusoController controladorProducto = new CamibusoController();
+        ProductoController controladorProducto = new ProductoController();
         
         boolean productoAgregado = controladorProducto.agregar("Camibuso ABC", "ASD", "M", "Blanco", 1, 50, 35000, "algodon");
 

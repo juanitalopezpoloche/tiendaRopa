@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Model.CamibusoModel;
+import Model.ProductoModel;
 
 
-public class CamibusoController {
+public class ProductoController {
     /* 
         Agregar Producto (Producto)-> Bool
         Buscar Todos los Productos ()-> Lista(Prod)
@@ -17,35 +18,35 @@ public class CamibusoController {
         Modificar un atributo en especifico (ID, Atributo) -> Bool
     */
 
-    Map<Integer, CamibusoModel> camibuso;
+    Map<Integer, ProductoModel> producto;
     private int id;
 
 
-    public CamibusoController() {
-        this.camibuso = new HashMap<>();
+    public ProductoController() {
+        this.producto = new HashMap<>();
     }
 
     // Crea un nuevo producto de camibuso
-    public Boolean agregar(String nombre, String marca, String talla, String color, int categoria, int stock, float precio, String tela){
+    public Boolean agregarCamibuso(String nombre, String marca, String talla, String color, int categoria, int stock, float precio, String tela){
         // Validacion básica de que los datos sean válidos
         if(nombre == null || nombre.trim().isEmpty() || marca == null || marca.trim().isEmpty() || talla == null || talla.isEmpty() || color == null || color.trim().isEmpty()|| tela == null || tela.trim().isEmpty() || categoria <= 0  || stock < 0 || precio <= 0) return false;
 
         id++;
         CamibusoModel nuevoCamibuso = new CamibusoModel(id, nombre, marca, talla, color, categoria, stock, precio, tela);
 
-        camibuso.put(id, nuevoCamibuso);
+        producto.put(id, nuevoCamibuso);
         return true;
     }
 
     // Actualiza un camibuso existente, a través de su ID.
-    public boolean actualizar(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, String tela){
+    public boolean actualizarCamibuso(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, String tela){
         boolean status = true;
 
         try{
             // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-            if(camibuso == null || camibuso.isEmpty() || id <= 0 || !camibuso.containsKey(id)) return false;
+            if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return false;
 
-            CamibusoModel camibusoExistente = camibuso.get(id);
+            ProductoModel camibusoExistente = producto.get(id);
 
             camibusoExistente.setNombre(nombre);
             camibusoExistente.setMarca(marca);
@@ -68,9 +69,9 @@ public class CamibusoController {
 
         try{
             // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-            if(camibuso == null || camibuso.isEmpty() || id <= 0 || !camibuso.containsKey(id)) return false;
+            if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return false;
 
-            camibuso.remove(id);
+            producto.remove(id);
         }catch(Exception e){
             status = false;
         }
@@ -83,9 +84,9 @@ public class CamibusoController {
         String listaCamibuso = "";
 
         try{
-            if(camibuso == null || camibuso.isEmpty()) return "No hay camibusos disponibles";
+            if(producto == null || producto.isEmpty()) return "No hay camibusos disponibles";
 
-            for(CamibusoModel producto : camibuso.values()){
+            for(ProductoModel producto : producto.values()){
                 listaCamibuso +=  producto.toString() + "\n";
             }
             
@@ -101,9 +102,9 @@ public class CamibusoController {
         String mensaje = "";
         try{
             // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-            if(camibuso == null || camibuso.isEmpty() || id <= 0 || !camibuso.containsKey(id)) return "El " + id + " no es válido.";
+            if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return "El " + id + " no es válido.";
 
-            CamibusoModel camibusoStock = camibuso.get(id);
+            ProductoModel camibusoStock = producto.get(id);
 
             if(camibusoStock.getStock() == 0) return "El camibuso con referencia " + id + " no tiene unidades disponibles";
 
@@ -121,9 +122,9 @@ public class CamibusoController {
 
         try{
             // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-            if(camibuso == null || camibuso.isEmpty() || id <= 0 || !camibuso.containsKey(id)) return false;
+            if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return false;
 
-            CamibusoModel camibusoEncontrado = camibuso.get(id);
+            ProductoModel camibusoEncontrado = producto.get(id);
 
             switch(identificadorAtributo){
                 case 1:
@@ -168,11 +169,11 @@ public class CamibusoController {
         return status;
     }
 
-    // Obtiene y retorna el objeto CamibusoModel correspondiente al ID dado.
-    public CamibusoModel getProductoCamibuso(int id){
+    // Obtiene y retorna el objeto ProductoModel correspondiente al ID dado.
+    public ProductoModel getProductoCamibuso(int id){
         // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-        if(camibuso == null || camibuso.isEmpty() || id <= 0 || !camibuso.containsKey(id)) return null;
+        if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return null;
         
-        return camibuso.get(id);
+        return producto.get(id);
     }
 }
