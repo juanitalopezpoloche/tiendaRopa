@@ -9,8 +9,9 @@ public abstract class ProductoModel {
     private int categoria;
     private int stock;
     private float precio;
+    private int estado;
 
-    public ProductoModel(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio) {
+    public ProductoModel(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, int estado) {
         this.id = id;
         this.nombre = nombre;
         this.marca = marca;
@@ -19,6 +20,7 @@ public abstract class ProductoModel {
         this.categoria = categoria;
         this.stock = stock;
         this.precio = precio;
+        this.estado = estado;
     }
 
     public ProductoModel() {
@@ -84,16 +86,22 @@ public abstract class ProductoModel {
         this.precio = precio;
     }
 
-    public String getProductoDisponible(){
-        String productoDisponible = "1. Camibusos";
-
-        return productoDisponible;
+    public int getEstado() {
+        return estado;
     }
 
-    public CamibusoModel crearCamibusoModel(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, String tela){
-        return new CamibusoModel(id, nombre, marca, talla, color, categoria, stock, precio, tela);
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
+    public static ProductoModel crearProducto(int tipoProducto, int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, int estado, String extra){
+        switch(tipoProducto) {
+            case 1:
+                return new CamibusoModel(id, nombre, marca, talla, color, categoria, stock, precio, estado, extra);
+            default:
+                return null;
+        }
+    }
     
     public String toString() {
         return "ProductoModel []";

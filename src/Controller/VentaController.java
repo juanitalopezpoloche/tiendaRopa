@@ -4,49 +4,53 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Model.CamibusoModel;
+import Model.ProductoModel;
 import Model.VentaModel;
 
 public class VentaController{
 
     private Map<Integer, VentaModel> historialVenta;
-    private ProductoController camibusoController;
+    private ProductoController productoController;
     private int idVenta;
 
-    public VentaController(ProductoController camibusoController){
-        this.camibusoController = camibusoController;
+    public VentaController(ProductoController productoController){
+        this.productoController = productoController;
         this.historialVenta = new HashMap<>();
         this.idVenta = 0;
     }
 
     // Genera le venta de un producto existente, actualiza stock del producto
-    public boolean realizarVenta(String nombreComprador, int idProducto, int cantidad){
-        boolean status = true;
+    public boolean realizarVenta(String nombreComprador, int idProducto, int cantidad) {
+    boolean status = true;
 
-        try{
-            CamibusoModel producto = camibusoController.getProductoCamibuso(idProducto);
+    try {
+        // Obtiene el producto desde el controlador
+        ProductoModel producto = productoController.getProducto(idProducto);
 
-            // El producto no existe, la cantidad no es válida, la cantidad disponible es menor a la cantidad de la venta
-            if(producto == null || cantidad <= 0 || producto.getStock() < cantidad) return false;
+        // Valida que el producto exista, que la cantidad solicitada sea mayor a cero y Validar stock disponible
+        if(producto == null || cantidad <= 0 || producto.getStock() < cantidad) return false;
 
-            String nombreProducto = producto.getNombre();
-            float precioProducto = producto.getPrecio();
-            float valorTotal = precioProducto * cantidad;
-            
-            // Genera ID venta y crea la venta
-            idVenta++;
-            VentaModel venta = new VentaModel(idVenta, idProducto, nombreComprador, nombreProducto, cantidad, precioProducto, valorTotal);
-            
-            // Guarda la venta
-            historialVenta.put(idVenta, venta);
+        String nombreProducto = producto.getNombre();
+        float precioProducto = producto.getPrecio();
+        float valorTotal = precioProducto * cantidad;
 
-            // Descouenta stock
-            producto.setStock(producto.getStock() - cantidad);
-        }catch(Exception e){
-            status = false;
-        }
+        // Genera ID y crea venta
+        idVenta++;
+        VentaModel venta = new VentaModel(idVenta, idProducto, nombreComprador, nombreProducto, cantidad, precioProducto, valorTotal);
 
-        return status;
+        // Guarda venta
+        historialVenta.put(idVenta, venta);
+        System.out.println("Venta creada: " + venta.toString());
+
+        // Actualiza stock
+        producto.setStock(producto.getStock() - cantidad);
+
+    }catch(Exception e){
+        status = false;
     }
+
+    return status;
+}
 
     // Retorna la información de una venta especifica por su ID
     public String obtenerVenta(int idVenta){

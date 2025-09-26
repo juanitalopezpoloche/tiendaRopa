@@ -5,7 +5,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         ProductoController controladorProducto = new ProductoController();
         
-        boolean productoAgregado = controladorProducto.agregar("Camibuso ABC", "ASD", "M", "Blanco", 1, 50, 35000, "algodon");
+        boolean productoAgregado = controladorProducto.agregarProducto(1, "Camibuso ABC", "ASD", "M", "Blanco", 1, 50, 35000, 1, "algodon");
 
         if(!productoAgregado){
             System.out.println("Error al crear el producto");
@@ -16,7 +16,7 @@ public class App {
         System.out.println("------ Productos Disponibles ------");
         System.out.println(controladorProducto.buscar());
 
-        boolean actualizarProducto = controladorProducto.actualizar(1, "Camibuso ABCD", "ASDF", "L", "Blanco", 1, 55, 32000, "algodon");
+        boolean actualizarProducto = controladorProducto.actualizarProducto(1, "Camibuso ABCD", "ASDF", "L", "Blanco", 1, 55, 32000, 1, "algodon");
 
         System.out.println(actualizarProducto ? "Producto actualizado correctamente" : "Error al actualizar el producto");
 
@@ -26,7 +26,7 @@ public class App {
         System.out.println("--------- Stock ---------");
         System.out.println(controladorProducto.validaStock(1));
 
-        boolean segundoProductoAgregado = controladorProducto.agregar("Camibuso ABC", "ASD", "M", "Blanco", 1, 50, 35000, "algodon");
+        boolean segundoProductoAgregado = controladorProducto.agregarProducto(1, "Camibuso ABC", "ASD", "M", "Blanco", 1, 50, 35000, 1,  "algodon");
 
         if(!segundoProductoAgregado){
             System.out.println("Error al agregar el segundo producto");
@@ -54,7 +54,7 @@ public class App {
 
         System.out.println(ventaRealizada ? "Venta realizada" : "Error al realizar la venta");
 
-        boolean segundaVentaRealizada = ventaProducto.realizarVenta("Felipe", 1, 3);
+        boolean segundaVentaRealizada = ventaProducto.realizarVenta("Felipe", 1, 1);
 
         System.out.println(segundaVentaRealizada ? "Venta realizada" : "Error al realizar la venta");
 

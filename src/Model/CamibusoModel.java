@@ -7,8 +7,8 @@ public class CamibusoModel extends ProductoModel{
     public CamibusoModel() {
     }
 
-    public CamibusoModel(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, String tela) {
-        super(id, nombre, marca, talla, color, categoria, stock, precio);
+    public CamibusoModel(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, int estado, String tela) {
+        super(id, nombre, marca, talla, color, categoria, stock, precio, estado);
         this.tela = tela;
     }
 

@@ -3,177 +3,131 @@ package Controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import Model.CamibusoModel;
-import Model.ProductoModel;
+import Model.*;
 
-
-public class ProductoController {
-    /* 
-        Agregar Producto (Producto)-> Bool
-        Buscar Todos los Productos ()-> Lista(Prod)
-        Actualizar un producto (ID, Producto) -> Bool
-        Eliminar un Producto (ID) -> Bool
-        Validad Stock (ID) -> Producto(Stock)
-        Filtro por Atributo (Atributo)-> Lista(Productos)
-        Modificar un atributo en especifico (ID, Atributo) -> Bool
-    */
+public class ProductoController{
 
     Map<Integer, ProductoModel> producto;
     private int id;
 
-
-    public ProductoController() {
+    public ProductoController(){
         this.producto = new HashMap<>();
     }
 
-    // Crea un nuevo producto de camibuso
-    public Boolean agregarCamibuso(String nombre, String marca, String talla, String color, int categoria, int stock, float precio, String tela){
-        // Validacion básica de que los datos sean válidos
-        if(nombre == null || nombre.trim().isEmpty() || marca == null || marca.trim().isEmpty() || talla == null || talla.isEmpty() || color == null || color.trim().isEmpty()|| tela == null || tela.trim().isEmpty() || categoria <= 0  || stock < 0 || precio <= 0) return false;
+    public boolean agregarProducto(int tipoProducto, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, int estado, String extra){
+
+        if(nombre == null || nombre.trim().isEmpty() || marca == null || marca.trim().isEmpty() || talla == null || talla.isEmpty() || color == null || color.trim().isEmpty() || categoria <= 0 || estado <= 0 || stock < 0 || precio <= 0){
+            return false;
+        }
 
         id++;
-        CamibusoModel nuevoCamibuso = new CamibusoModel(id, nombre, marca, talla, color, categoria, stock, precio, tela);
+        ProductoModel nuevoProducto = ProductoModel.crearProducto(tipoProducto, id, nombre, marca, talla, color, categoria, stock, precio, estado, extra);
 
-        producto.put(id, nuevoCamibuso);
+        if(nuevoProducto == null) return false;
+
+        producto.put(id, nuevoProducto);
         return true;
     }
 
-    // Actualiza un camibuso existente, a través de su ID.
-    public boolean actualizarCamibuso(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, String tela){
-        boolean status = true;
+    public boolean actualizarProducto(int id, String nombre, String marca, String talla, String color, int categoria, int stock, float precio, int estado, String extra){
+        if(!producto.containsKey(id)) return false;
 
-        try{
-            // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-            if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return false;
+        ProductoModel productoExistente = producto.get(id);
 
-            ProductoModel camibusoExistente = producto.get(id);
+        productoExistente.setNombre(nombre);
+        productoExistente.setMarca(marca);
+        productoExistente.setTalla(talla);
+        productoExistente.setColor(color);
+        productoExistente.setCategoria(categoria);
+        productoExistente.setStock(stock);
+        productoExistente.setPrecio(precio);
+        productoExistente.setStock(estado);
 
-            camibusoExistente.setNombre(nombre);
-            camibusoExistente.setMarca(marca);
-            camibusoExistente.setTalla(talla);
-            camibusoExistente.setColor(color);
-            camibusoExistente.setCategoria(categoria);
-            camibusoExistente.setStock(stock);
-            camibusoExistente.setPrecio(precio);
-            camibusoExistente.setTela(tela);
-        }catch(Exception e){
-            status = false;
+        if(productoExistente instanceof CamibusoModel){
+            ((CamibusoModel) productoExistente).setTela(extra);
         }
-           
-        return status;
+
+        return true;
     }
 
-    // Elimina un producto existe
     public boolean eliminar(int id){
-        boolean status = true;
+        if(!producto.containsKey(id)) return false;
 
-        try{
-            // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-            if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return false;
-
-            producto.remove(id);
-        }catch(Exception e){
-            status = false;
-        }
-
-        return status;
-    }
-
-    // Retorna un string con la lista de todos los camibusos disponibles.
-    public String buscar(){
-        String listaCamibuso = "";
-
-        try{
-            if(producto == null || producto.isEmpty()) return "No hay camibusos disponibles";
-
-            for(ProductoModel producto : producto.values()){
-                listaCamibuso +=  producto.toString() + "\n";
-            }
-            
-        }catch(Exception e){
-            listaCamibuso = "Error inesperado en la busqueda de los productos disponibles de camibuso";
-        }
-
-        return listaCamibuso;
-    }
-
-    // Retorna la información del producto solo si hay unidades disponibles
-    public String validaStock(int id){
-        String mensaje = "";
-        try{
-            // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-            if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return "El " + id + " no es válido.";
-
-            ProductoModel camibusoStock = producto.get(id);
-
-            if(camibusoStock.getStock() == 0) return "El camibuso con referencia " + id + " no tiene unidades disponibles";
-
-            mensaje = camibusoStock.toString();
-        }catch(Exception e){
-            mensaje = "Ocurrió un error inesperado al validar el stock para la referencia: " + id;
-        }
-
-        return mensaje;
-    }
-
-    // Modifica un atributo específico de un camibuso identificado por su ID.  El atributo se identifica con un código y se asigna el nuevo valor.
-    public boolean modificarAtributo(int id, int identificadorAtributo, String valorAtributo){
-        boolean status = true;
-
-        try{
-            // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-            if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return false;
-
-            ProductoModel camibusoEncontrado = producto.get(id);
-
-            switch(identificadorAtributo){
-                case 1:
-                    // nombre
-                    camibusoEncontrado.setNombre(valorAtributo);
-                    break;        
-                case 2:
-                    // marca
-                    camibusoEncontrado.setMarca(valorAtributo);
-                    break;        
-                case 3:
-                    // talla
-                    camibusoEncontrado.setTalla(valorAtributo);
-                    break;        
-                case 4:
-                    // color
-                    camibusoEncontrado.setColor(valorAtributo);
-                    break;        
-                case 5:
-                    // categoria
-                    camibusoEncontrado.setCategoria(Integer.parseInt(valorAtributo));
-                    break;  
-                case 7:
-                    // stock
-                    camibusoEncontrado.setStock(Integer.parseInt(valorAtributo));
-                    break;        
-                case 8:
-                    // precio
-                    camibusoEncontrado.setPrecio(Float.parseFloat(valorAtributo));
-                    break;        
-                case 9:
-                    // tela
-                    camibusoEncontrado.setTela(valorAtributo);
-                    break;        
-                default:
-                    status = false;
-            }
-        }catch(Exception e){
-            status = false;
-        }
-
-        return status;
-    }
-
-    // Obtiene y retorna el objeto ProductoModel correspondiente al ID dado.
-    public ProductoModel getProductoCamibuso(int id){
-        // Valida que el ID ingresado sea correcto y corresponda a un registro existente
-        if(producto == null || producto.isEmpty() || id <= 0 || !producto.containsKey(id)) return null;
+        producto.remove(id);
         
+        return true;
+    }
+
+    public String buscar(){
+        if(producto == null || producto.isEmpty()) return "No hay productos disponibles";
+
+        String infoProducto = "";
+        for(ProductoModel productoIndivdual : producto.values()){
+            infoProducto += productoIndivdual.toString() + "\n";
+        }
+
+        return infoProducto;
+    }
+
+    public String validaStock(int id){
+        if(!producto.containsKey(id)) return "El ID " + id + " no es válido.";
+
+        ProductoModel productoEncontrado = producto.get(id);
+        if(productoEncontrado.getStock() == 0) return "El producto con referencia " + id + " no tiene unidades disponibles";
+
+        return productoEncontrado.toString();
+    }
+
+    public boolean modificarAtributo(int id, int atributo, String valor){
+        if(!producto.containsKey(id)) return false;
+
+        ProductoModel productoEncontrado = producto.get(id);
+
+        try{
+            switch(atributo){
+                case 1: 
+                    productoEncontrado.setNombre(valor);
+                    break;
+                case 2: 
+                    productoEncontrado.setMarca(valor);
+                    break;
+                case 3: 
+                    productoEncontrado.setTalla(valor);
+                    break;
+                case 4: 
+                    productoEncontrado.setColor(valor);
+                    break;
+                case 5: 
+                    productoEncontrado.setCategoria(Integer.parseInt(valor));
+                    break;
+                case 7: 
+                    productoEncontrado.setStock(Integer.parseInt(valor));
+                    break;
+                case 8: 
+                    productoEncontrado.setPrecio(Float.parseFloat(valor));
+                    break;
+                case 9: 
+                    productoEncontrado.setEstado(Integer.parseInt(valor));
+                    break;
+                case 10:
+                    if(productoEncontrado instanceof CamibusoModel){
+                        ((CamibusoModel) productoEncontrado).setTela(valor);
+                    }else{
+                        return false;
+                    }
+                    break;
+                default: 
+                    return false;
+            }
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    public ProductoModel getProducto(int id){
+        if(!producto.containsKey(id)) return null;
         return producto.get(id);
     }
 }
